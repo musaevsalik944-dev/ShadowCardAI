@@ -6,44 +6,72 @@
 
 <style>
 body{
-background:#090912;
+margin:0;
+background:#050509;
 color:white;
-font-family:Arial;
+font-family:Arial,sans-serif;
 text-align:center;
-padding:20px;
 }
 
-.box{
-max-width:450px;
-margin:auto;
-background:#17172a;
+.container{
 padding:25px;
-border-radius:25px;
-box-shadow:0 0 25px #8a2be2;
+max-width:500px;
+margin:auto;
 }
 
-h1{
+.logo{
+font-size:32px;
+font-weight:bold;
 color:#b36cff;
 }
 
-input, select, button{
+.box{
+background:#151522;
+border-radius:25px;
+padding:25px;
+margin-top:20px;
+box-shadow:0 0 30px #8a2be2;
+}
+
+input,select,button,textarea{
 width:90%;
-padding:12px;
+padding:14px;
 margin:10px;
-border-radius:12px;
-border:0;
+border-radius:15px;
+border:none;
+font-size:16px;
 }
 
 button{
 background:#8a2be2;
 color:white;
-font-size:18px;
+font-weight:bold;
 }
 
-canvas{
-max-width:100%;
+.preview{
 margin-top:20px;
-border-radius:15px;
+}
+
+img{
+max-width:100%;
+border-radius:20px;
+}
+
+.result{
+background:#202033;
+padding:20px;
+border-radius:20px;
+margin-top:20px;
+}
+
+.style{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.style button{
+width:40%;
 }
 </style>
 
@@ -51,38 +79,69 @@ border-radius:15px;
 
 <body>
 
+<div class="container">
+
+<div class="logo">🌑 ShadowCard AI</div>
+
+<p>AI-дизайнер карточек товаров</p>
+
+
 <div class="box">
 
-<h1>🌑 ShadowCard AI</h1>
+<h2>📸 Загрузите товар</h2>
 
-<p>Создай AI-карточку товара</p>
+<input type="file" id="photo" accept="image/*">
 
-<input id="photo" type="file" accept="image/*">
+<div class="preview">
+<img id="preview" style="display:none">
+</div>
 
-<input id="name" placeholder="Название товара">
 
-<select id="style">
-<option>⚪ Минимализм</option>
-<option>🟣 Премиум</option>
-<option>🔥 Маркетплейс</option>
-<option>🌑 Shadow Style</option>
-</select>
+<textarea id="name" placeholder="Название товара"></textarea>
 
-<button onclick="createCard()">
-🤖 Создать AI-карточку
+
+<h3>🎨 Выберите стиль</h3>
+
+<div class="style">
+
+<button onclick="setStyle('Premium')">
+✨ Premium
 </button>
 
-<canvas id="canvas"></canvas>
+<button onclick="setStyle('Marketplace')">
+🔥 Marketplace
+</button>
+
+<button onclick="setStyle('Minimal')">
+⚪ Minimal
+</button>
+
+<button onclick="setStyle('Shadow')">
+🌑 Shadow
+</button>
+
+</div>
+
+
+<button onclick="createDesign()">
+🤖 Создать AI-дизайн
+</button>
+
+
+<div class="result" id="result">
+Здесь появится дизайн
+</div>
+
+
+</div>
 
 </div>
 
 
 <script>
 
-let img=new Image();
-let canvas=document.getElementById("canvas");
-let ctx=canvas.getContext("2d");
-let loaded=false;
+let image="";
+let style="Premium";
 
 
 document.getElementById("photo").onchange=function(){
@@ -91,18 +150,12 @@ let reader=new FileReader();
 
 reader.onload=function(e){
 
-img.onload=function(){
+image=e.target.result;
 
-canvas.width=img.width;
-canvas.height=img.height;
+let img=document.getElementById("preview");
 
-ctx.drawImage(img,0,0);
-
-loaded=true;
-
-}
-
-img.src=e.target.result;
+img.src=image;
+img.style.display="block";
 
 }
 
@@ -112,41 +165,40 @@ reader.readAsDataURL(this.files[0]);
 
 
 
-function createCard(){
+function setStyle(s){
 
-if(!loaded){
-alert("Сначала загрузите фото");
-return;
+style=s;
+
 }
 
+
+function createDesign(){
+
 let name=document.getElementById("name").value;
-let style=document.getElementById("style").value;
+
+if(name==""){
+name="Ваш товар";
+}
 
 
-ctx.drawImage(img,0,0);
+document.getElementById("result").innerHTML=`
 
+<h2>✨ AI дизайн готов</h2>
 
-ctx.fillStyle="rgba(0,0,0,0.55)";
-ctx.fillRect(0,canvas.height-160,canvas.width,160);
+<img src="${image}">
 
+<h3>${name}</h3>
 
-ctx.fillStyle="white";
-ctx.font="bold 40px Arial";
+<p>Стиль: ${style}</p>
 
+<p>🌑 Создано в ShadowCard AI</p>
 
-ctx.fillText("🔥 "+name,30,canvas.height-100);
-
-
-ctx.font="28px Arial";
-ctx.fillText(style,30,canvas.height-55);
-
-
-ctx.fillText("✨ AI DESIGN",30,canvas.height-20);
-
+`;
 
 }
 
 </script>
+
 
 </body>
 </html>
