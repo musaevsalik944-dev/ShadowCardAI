@@ -2,43 +2,45 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ShadowCard AI</title>
+
+<title>ShadowCard AI Studio</title>
 
 <style>
+
 body{
-margin:0;
-background:#050509;
+background:#07070d;
 color:white;
-font-family:Arial,sans-serif;
-text-align:center;
+font-family:Arial;
+margin:0;
 }
 
-.container{
-padding:25px;
-max-width:500px;
+.app{
+max-width:600px;
 margin:auto;
+padding:20px;
 }
 
 .logo{
 font-size:32px;
 font-weight:bold;
 color:#b36cff;
+text-align:center;
 }
 
-.box{
+.card{
 background:#151522;
+padding:20px;
 border-radius:25px;
-padding:25px;
 margin-top:20px;
-box-shadow:0 0 30px #8a2be2;
+box-shadow:0 0 25px #8a2be2;
 }
 
-input,select,button,textarea{
-width:90%;
+input,select,button{
+width:100%;
 padding:14px;
-margin:10px;
+margin-top:12px;
 border-radius:15px;
-border:none;
+border:0;
 font-size:16px;
 }
 
@@ -48,100 +50,105 @@ color:white;
 font-weight:bold;
 }
 
-.preview{
-margin-top:20px;
-}
-
 img{
 max-width:100%;
 border-radius:20px;
+margin-top:15px;
 }
 
 .result{
 background:#202033;
-padding:20px;
+padding:15px;
 border-radius:20px;
 margin-top:20px;
 }
 
-.style{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-}
-
-.style button{
-width:40%;
-}
 </style>
 
 </head>
 
+
 <body>
 
-<div class="container">
 
-<div class="logo">🌑 ShadowCard AI</div>
+<div class="app">
 
-<p>AI-дизайнер карточек товаров</p>
+<div class="logo">
+🌑 ShadowCard AI
+</div>
+
+<p style="text-align:center">
+AI Studio для карточек товаров
+</p>
 
 
-<div class="box">
+<div class="card">
 
-<h2>📸 Загрузите товар</h2>
+
+<h2>📸 Товар</h2>
 
 <input type="file" id="photo" accept="image/*">
 
-<div class="preview">
+
 <img id="preview" style="display:none">
-</div>
 
 
-<textarea id="name" placeholder="Название товара"></textarea>
+<h2>🎯 Задача</h2>
+
+<select id="task">
+
+<option>🖼 Главное фото товара</option>
+
+<option>🎨 Инфографика</option>
+
+<option>✨ Рекламный дизайн</option>
+
+<option>🧹 Улучшить фото</option>
+
+</select>
 
 
-<h3>🎨 Выберите стиль</h3>
 
-<div class="style">
+<h2>🎨 Стиль</h2>
 
-<button onclick="setStyle('Premium')">
-✨ Premium
-</button>
+<select id="style">
 
-<button onclick="setStyle('Marketplace')">
-🔥 Marketplace
-</button>
+<option>⚡ Premium</option>
 
-<button onclick="setStyle('Minimal')">
-⚪ Minimal
-</button>
+<option>🔥 Marketplace</option>
 
-<button onclick="setStyle('Shadow')">
-🌑 Shadow
-</button>
+<option>🌑 Shadow</option>
 
-</div>
+<option>⚪ Minimal</option>
+
+</select>
 
 
-<button onclick="createDesign()">
-🤖 Создать AI-дизайн
+
+<button onclick="create()">
+
+🤖 Создать AI дизайн
+
 </button>
 
 
 <div class="result" id="result">
-Здесь появится дизайн
+
+Здесь появится результат
+
 </div>
 
 
 </div>
+
 
 </div>
 
 
 <script>
 
+
 let image="";
-let style="Premium";
 
 
 document.getElementById("photo").onchange=function(){
@@ -155,6 +162,7 @@ image=e.target.result;
 let img=document.getElementById("preview");
 
 img.src=image;
+
 img.style.display="block";
 
 }
@@ -165,37 +173,31 @@ reader.readAsDataURL(this.files[0]);
 
 
 
-function setStyle(s){
+function create(){
 
-style=s;
+let task=document.getElementById("task").value;
 
-}
-
-
-function createDesign(){
-
-let name=document.getElementById("name").value;
-
-if(name==""){
-name="Ваш товар";
-}
+let style=document.getElementById("style").value;
 
 
-document.getElementById("result").innerHTML=`
+document.getElementById("result").innerHTML=
 
-<h2>✨ AI дизайн готов</h2>
+`
 
-<img src="${image}">
+<h2>✨ Дизайн создан</h2>
 
-<h3>${name}</h3>
+${image ? `<img src="${image}">` : ""}
 
-<p>Стиль: ${style}</p>
+<p>🎯 ${task}</p>
 
-<p>🌑 Создано в ShadowCard AI</p>
+<p>🎨 Стиль: ${style}</p>
+
+<p>🌑 ShadowCard AI</p>
 
 `;
 
 }
+
 
 </script>
 
