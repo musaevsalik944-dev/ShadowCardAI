@@ -17,7 +17,7 @@ padding:20px;
 max-width:450px;
 margin:auto;
 background:#17172a;
-padding:20px;
+padding:25px;
 border-radius:25px;
 box-shadow:0 0 25px #8a2be2;
 }
@@ -26,30 +26,28 @@ h1{
 color:#b36cff;
 }
 
-input,textarea{
+input,button{
 width:90%;
 padding:12px;
 margin:10px;
-border-radius:10px;
+border-radius:12px;
 border:0;
 }
 
 button{
 background:#8a2be2;
 color:white;
-padding:15px 25px;
-border:0;
-border-radius:15px;
 font-size:18px;
 }
 
-canvas{
-max-width:100%;
-margin-top:20px;
+.option{
+background:#24243b;
+padding:15px;
+margin:10px;
 border-radius:15px;
+cursor:pointer;
 }
 </style>
-
 </head>
 
 <body>
@@ -58,82 +56,59 @@ border-radius:15px;
 
 <h1>🌑 ShadowCard AI</h1>
 
-<p>Создай карточку товара</p>
+<p>🤖 Создай рекламный текст для товара</p>
 
-<input id="photo" type="file" accept="image/*">
+<input id="product" placeholder="Например: футболка">
 
-<input id="name" placeholder="Название товара">
-
-<input id="price" placeholder="Цена">
-
-<button onclick="createCard()">
-🚀 Создать карточку
+<button onclick="generateText()">
+🤖 Создать текст ИИ
 </button>
 
-<br>
-
-<canvas id="canvas"></canvas>
+<div id="results"></div>
 
 </div>
 
 
 <script>
 
-let img = new Image();
-let canvas=document.getElementById("canvas");
-let ctx=canvas.getContext("2d");
+function generateText(){
+
+let product=document.getElementById("product").value;
+
+if(product==""){
+product="товар";
+}
+
+let texts=[
+"🔥 НОВИНКА\nКРУТЫЕ "+product.toUpperCase()+"\nСТИЛЬ НА КАЖДЫЙ ДЕНЬ",
+
+"✨ НОВЫЙ СТИЛЬ\n"+product.toUpperCase()+" TOP",
+
+"🔥 ТВОЙ ВЫБОР\nМОДНЫЙ "+product.toUpperCase()
+];
 
 
-document.getElementById("photo").onchange=function(){
+let html="";
 
-let file=this.files[0];
+texts.forEach(function(t){
 
-let reader=new FileReader();
+html+=`
+<div class="option" onclick="selectText(this)">
+${t.replaceAll("\n","<br>")}
+</div>
+`;
 
-reader.onload=function(e){
+});
 
-img.onload=function(){
 
-canvas.width=img.width;
-canvas.height=img.height;
-
-ctx.drawImage(img,0,0);
+document.getElementById("results").innerHTML=html;
 
 }
 
-img.src=e.target.result;
 
-}
+function selectText(el){
 
-reader.readAsDataURL(file);
-
-}
-
-
-
-function createCard(){
-
-ctx.drawImage(img,0,0);
-
-
-ctx.fillStyle="rgba(0,0,0,0.6)";
-ctx.fillRect(0,canvas.height-170,canvas.width,170);
-
-
-ctx.fillStyle="white";
-ctx.font="bold 40px Arial";
-
-
-let name=document.getElementById("name").value;
-let price=document.getElementById("price").value;
-
-
-ctx.fillText(name,30,canvas.height-110);
-
-ctx.fillText("💰 "+price+" ₽",30,canvas.height-60);
-
-ctx.fillText("⭐ 4.9  🚚 Доставка",30,canvas.height-20);
-
+alert("Выбран текст:\n\n"+el.innerText);
 
 }
 
