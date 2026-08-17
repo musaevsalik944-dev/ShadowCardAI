@@ -2,11 +2,9 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>ShadowCard AI Studio</title>
 
 <style>
-
 body{
 background:#07070d;
 color:white;
@@ -21,23 +19,23 @@ padding:20px;
 }
 
 .logo{
-font-size:32px;
+font-size:34px;
 font-weight:bold;
-color:#b36cff;
+color:#a855f7;
 text-align:center;
 }
 
 .card{
-background:#151522;
-padding:20px;
+background:#171725;
 border-radius:25px;
+padding:25px;
 margin-top:20px;
-box-shadow:0 0 25px #8a2be2;
+box-shadow:0 0 30px #6d28d9;
 }
 
-input,select,button{
+input,textarea,select,button{
 width:100%;
-padding:14px;
+padding:15px;
 margin-top:12px;
 border-radius:15px;
 border:0;
@@ -45,31 +43,28 @@ font-size:16px;
 }
 
 button{
-background:#8a2be2;
+background:#8b5cf6;
 color:white;
 font-weight:bold;
 }
 
-img{
-max-width:100%;
+.preview img{
+width:100%;
 border-radius:20px;
 margin-top:15px;
 }
 
 .result{
-background:#202033;
-padding:15px;
-border-radius:20px;
 margin-top:20px;
+padding:20px;
+background:#222238;
+border-radius:20px;
 }
-
 </style>
 
 </head>
 
-
 <body>
-
 
 <div class="app">
 
@@ -78,75 +73,57 @@ margin-top:20px;
 </div>
 
 <p style="text-align:center">
-AI Studio для карточек товаров
+AI Studio для создания карточек товаров
 </p>
 
 
 <div class="card">
 
-
-<h2>📸 Товар</h2>
+<h2>📸 Фото товара</h2>
 
 <input type="file" id="photo" accept="image/*">
 
 
+<div class="preview">
 <img id="preview" style="display:none">
+</div>
 
 
-<h2>🎯 Задача</h2>
+<h2>✍️ Задание для ИИ</h2>
 
-<select id="task">
-
-<option>🖼 Главное фото товара</option>
-
-<option>🎨 Инфографика</option>
-
-<option>✨ Рекламный дизайн</option>
-
-<option>🧹 Улучшить фото</option>
-
-</select>
-
+<textarea id="prompt"
+placeholder="Например: Сделай премиальную карточку футболки для маркетплейса">
+</textarea>
 
 
 <h2>🎨 Стиль</h2>
 
 <select id="style">
 
-<option>⚡ Premium</option>
-
+<option>✨ Premium</option>
 <option>🔥 Marketplace</option>
-
+<option>💎 Luxury</option>
 <option>🌑 Shadow</option>
-
-<option>⚪ Minimal</option>
 
 </select>
 
 
-
-<button onclick="create()">
-
-🤖 Создать AI дизайн
-
+<button onclick="createAI()">
+🤖 Создать AI-дизайн
 </button>
 
 
 <div class="result" id="result">
-
 Здесь появится результат
-
 </div>
 
 
 </div>
-
 
 </div>
 
 
 <script>
-
 
 let image="";
 
@@ -162,7 +139,6 @@ image=e.target.result;
 let img=document.getElementById("preview");
 
 img.src=image;
-
 img.style.display="block";
 
 }
@@ -173,31 +149,25 @@ reader.readAsDataURL(this.files[0]);
 
 
 
-function create(){
+function createAI(){
 
-let task=document.getElementById("task").value;
-
+let prompt=document.getElementById("prompt").value;
 let style=document.getElementById("style").value;
 
 
-document.getElementById("result").innerHTML=
+document.getElementById("result").innerHTML=`
 
-`
+<h2>🤖 Запрос отправлен</h2>
 
-<h2>✨ Дизайн создан</h2>
+<p>${prompt}</p>
 
-${image ? `<img src="${image}">` : ""}
+<p>Стиль: ${style}</p>
 
-<p>🎯 ${task}</p>
-
-<p>🎨 Стиль: ${style}</p>
-
-<p>🌑 ShadowCard AI</p>
+<p>⏳ Подключаем AI-генерацию...</p>
 
 `;
 
 }
-
 
 </script>
 
