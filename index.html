@@ -6,48 +6,54 @@
 
 <style>
 body {
-  background: #0b0b12;
-  color: white;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  padding: 20px;
+  background:#0b0b12;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+  padding:20px;
 }
 
 .card {
-  background: #171722;
-  border-radius: 20px;
-  padding: 25px;
-  max-width: 450px;
-  margin: auto;
-  box-shadow: 0 0 20px #8a2be2;
+  background:#171722;
+  border-radius:20px;
+  padding:25px;
+  max-width:450px;
+  margin:auto;
+  box-shadow:0 0 20px #8a2be2;
 }
 
 h1 {
-  color: #b36cff;
+  color:#b36cff;
 }
 
 input, textarea {
-  width: 90%;
-  margin: 10px;
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
+  width:90%;
+  padding:12px;
+  margin:10px;
+  border-radius:10px;
+  border:none;
 }
 
 button {
-  background: #8a2be2;
-  color: white;
-  border: none;
-  padding: 15px 25px;
-  border-radius: 15px;
-  font-size: 18px;
+  background:#8a2be2;
+  color:white;
+  padding:15px 25px;
+  border:none;
+  border-radius:15px;
+  font-size:18px;
+}
+
+img {
+  max-width:90%;
+  border-radius:15px;
+  margin-top:15px;
 }
 
 .result {
-  margin-top: 20px;
-  padding: 15px;
-  background: #222233;
-  border-radius: 15px;
+  margin-top:20px;
+  background:#222233;
+  padding:15px;
+  border-radius:15px;
 }
 </style>
 
@@ -59,23 +65,54 @@ button {
 
 <h1>🌑 ShadowCard AI</h1>
 
-<p>Создание карточек товаров с помощью ИИ</p>
+<p>Создай карточку товара</p>
 
-<input type="file">
-
-<textarea placeholder="Введите описание товара"></textarea>
+<input type="file" id="photo" accept="image/*">
 
 <br>
 
-<button>
+<img id="preview" style="display:none">
+
+<textarea id="text" placeholder="Описание товара"></textarea>
+
+<br>
+
+<button onclick="createCard()">
 🚀 Создать карточку
 </button>
 
-<div class="result">
-✨ Здесь появится готовая карточка товара
+<div class="result" id="result">
+✨ Здесь появится карточка
 </div>
 
 </div>
+
+
+<script>
+
+let photo = document.getElementById("photo");
+let preview = document.getElementById("preview");
+
+photo.onchange = function(){
+ let file = photo.files[0];
+ preview.src = URL.createObjectURL(file);
+ preview.style.display="block";
+}
+
+
+function createCard(){
+
+let text = document.getElementById("text").value;
+
+document.getElementById("result").innerHTML =
+"✨ Карточка готова<br><br>" +
+"🛒 Товар:<br>" +
+text +
+"<br><br>⭐ Рейтинг: 5.0<br>📦 Категория: Товар";
+
+}
+
+</script>
 
 </body>
 </html>
