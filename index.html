@@ -46,7 +46,7 @@ font-size:18px;
 img{
 max-width:90%;
 border-radius:15px;
-margin-top:15px;
+margin:15px;
 }
 
 .result{
@@ -65,11 +65,13 @@ border-radius:15px;
 
 <h1>🌑 ShadowCard AI</h1>
 
-<p>Создай карточку товара</p>
+<p>Создание карточки товара</p>
 
 <input id="photo" type="file" accept="image/*">
 
 <br>
+
+<img id="preview" style="display:none">
 
 <textarea id="description" placeholder="Описание товара"></textarea>
 
@@ -80,7 +82,7 @@ border-radius:15px;
 </button>
 
 <div class="result" id="result">
-✨ Здесь появится карточка
+✨ Карточка появится здесь
 </div>
 
 </div>
@@ -88,44 +90,56 @@ border-radius:15px;
 
 <script>
 
-let selectedImage = "";
+let imageData = "";
 
-document.getElementById("photo").onchange = function(){
+
+document.getElementById("photo").addEventListener("change", function(){
 
 let file = this.files[0];
 
 if(file){
 
-selectedImage = URL.createObjectURL(file);
+let reader = new FileReader();
+
+reader.onload = function(e){
+
+imageData = e.target.result;
+
+let preview = document.getElementById("preview");
+
+preview.src = imageData;
+
+preview.style.display="block";
 
 }
 
-};
+reader.readAsDataURL(file);
+
+}
+
+});
 
 
 function makeCard(){
 
 let text = document.getElementById("description").value;
 
-if(text==""){
+if(text===""){
 text="Новый товар";
 }
 
 
-document.getElementById("result").innerHTML =
+document.getElementById("result").innerHTML = `
 
-`
 <h2>✨ Карточка готова</h2>
 
-${selectedImage ? `<img src="${selectedImage}">` : ""}
-
-<br>
+${imageData ? `<img src="${imageData}">` : ""}
 
 <h3>🛒 ${text}</h3>
 
 ⭐ Рейтинг: 5.0
 
-<br>
+<br><br>
 
 📦 Категория: Товар
 
