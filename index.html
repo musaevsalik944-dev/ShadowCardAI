@@ -1,58 +1,170 @@
-async function createAI(){
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShadowCard AI</title>
 
-let prompt = document.getElementById("prompt").value;
-let style = document.getElementById("style").value;
+<style>
+body{
+background:#080810;
+color:white;
+font-family:Arial;
+text-align:center;
+padding:20px;
+}
 
-document.getElementById("result").innerHTML =
-"⏳ Отправляю запрос в AI...";
+.box{
+max-width:500px;
+margin:auto;
+background:#171725;
+padding:25px;
+border-radius:25px;
+}
+
+h1{
+color:#a855f7;
+}
+
+input,textarea,select,button{
+width:90%;
+padding:15px;
+margin:10px;
+border-radius:15px;
+border:0;
+}
+
+button{
+background:#8b5cf6;
+color:white;
+font-size:18px;
+}
+
+img{
+max-width:100%;
+border-radius:20px;
+margin-top:15px;
+}
+
+.result{
+margin-top:20px;
+background:#222238;
+padding:20px;
+border-radius:20px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h1>🌑 ShadowCard AI</h1>
+
+<p>AI карточки товаров</p>
+
+<input type="file" id="photo" accept="image/*">
+
+<img id="preview" style="display:none">
 
 
-let response = await fetch("http://localhost:3000/generate", {
-
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body: JSON.stringify({
-
-prompt: prompt + " стиль " + style
-
-})
-
-});
+<textarea id="prompt"
+placeholder="Например: Сделай премиальную карточку футболки">
+</textarea>
 
 
-let data = await response.json();
+<select id="style">
+<option>✨ Premium</option>
+<option>🔥 Marketplace</option>
+<option>💎 Luxury</option>
+<option>🌑 Shadow</option>
+</select>
 
 
-document.getElementById("result").innerHTML =
+<button onclick="createAI()">
+🤖 Создать AI-дизайн
+</button>
 
-"🤖 Ответ сервера:<br><br>" + data.message;
+
+<div class="result" id="result">
+Готов к работе
+</div>
+
+
+</div>
+
+
+<script>
+
+let image="";
+
+
+document.getElementById("photo").onchange=function(){
+
+let reader=new FileReader();
+
+reader.onload=function(e){
+
+image=e.target.result;
+
+let img=document.getElementById("preview");
+
+img.src=image;
+img.style.display="block";
 
 }
+
+reader.readAsDataURL(this.files[0]);
+
+}
+
+
+
+async function createAI(){
 
 let prompt=document.getElementById("prompt").value;
 let style=document.getElementById("style").value;
 
 
-document.getElementById("result").innerHTML=`
+document.getElementById("result").innerHTML=
+"⏳ Отправляем запрос...";
 
-<h2>🤖 Запрос отправлен</h2>
 
-<p>${prompt}</p>
+try{
 
-<p>Стиль: ${style}</p>
+let response=await fetch(
+"http://localhost:3000/generate",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+prompt:prompt,
+style:style
+})
+});
 
-<p>⏳ Подключаем AI-генерацию...</p>
 
-`;
+let data=await response.json();
+
+
+document.getElementById("result").innerHTML=
+"🤖 "+data.message;
+
+
+}
+
+catch(e){
+
+document.getElementById("result").innerHTML=
+"❌ Сервер AI пока не подключён";
+
+}
 
 }
 
 </script>
-
 
 </body>
 </html>
