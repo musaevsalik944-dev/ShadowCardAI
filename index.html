@@ -8,7 +8,7 @@
 body{
 background:#090912;
 color:white;
-font-family:Arial,sans-serif;
+font-family:Arial;
 text-align:center;
 padding:20px;
 }
@@ -17,7 +17,7 @@ padding:20px;
 max-width:450px;
 margin:auto;
 background:#17172a;
-padding:25px;
+padding:20px;
 border-radius:25px;
 box-shadow:0 0 25px #8a2be2;
 }
@@ -30,7 +30,7 @@ input,textarea{
 width:90%;
 padding:12px;
 margin:10px;
-border-radius:12px;
+border-radius:10px;
 border:0;
 }
 
@@ -43,16 +43,9 @@ border-radius:15px;
 font-size:18px;
 }
 
-img{
-max-width:90%;
-border-radius:15px;
-margin:15px;
-}
-
-.result{
+canvas{
+max-width:100%;
 margin-top:20px;
-background:#24243b;
-padding:15px;
 border-radius:15px;
 }
 </style>
@@ -65,51 +58,50 @@ border-radius:15px;
 
 <h1>🌑 ShadowCard AI</h1>
 
-<p>Создание карточки товара</p>
+<p>Создай карточку товара</p>
 
 <input id="photo" type="file" accept="image/*">
 
-<br>
+<input id="name" placeholder="Название товара">
 
-<img id="preview" style="display:none">
+<input id="price" placeholder="Цена">
 
-<textarea id="description" placeholder="Описание товара"></textarea>
-
-<br>
-
-<button onclick="makeCard()">
+<button onclick="createCard()">
 🚀 Создать карточку
 </button>
 
-<div class="result" id="result">
-✨ Карточка появится здесь
-</div>
+<br>
+
+<canvas id="canvas"></canvas>
 
 </div>
 
 
 <script>
 
-let imageData = "";
+let img = new Image();
+let canvas=document.getElementById("canvas");
+let ctx=canvas.getContext("2d");
 
 
-document.getElementById("photo").addEventListener("change", function(){
+document.getElementById("photo").onchange=function(){
 
-let file = this.files[0];
+let file=this.files[0];
 
-if(file){
+let reader=new FileReader();
 
-let reader = new FileReader();
+reader.onload=function(e){
 
-reader.onload = function(e){
+img.onload=function(){
 
-imageData = e.target.result;
+canvas.width=img.width;
+canvas.height=img.height;
 
-let preview = document.getElementById("preview");
+ctx.drawImage(img,0,0);
 
-preview.src = imageData;
+}
 
-preview.style.display="block";
+img.src=e.target.result;
 
 }
 
@@ -117,37 +109,31 @@ reader.readAsDataURL(file);
 
 }
 
-});
 
 
-function makeCard(){
+function createCard(){
 
-let text = document.getElementById("description").value;
-
-if(text===""){
-text="Новый товар";
-}
+ctx.drawImage(img,0,0);
 
 
-document.getElementById("result").innerHTML = `
+ctx.fillStyle="rgba(0,0,0,0.6)";
+ctx.fillRect(0,canvas.height-170,canvas.width,170);
 
-<h2>✨ Карточка готова</h2>
 
-${imageData ? `<img src="${imageData}">` : ""}
+ctx.fillStyle="white";
+ctx.font="bold 40px Arial";
 
-<h3>🛒 ${text}</h3>
 
-⭐ Рейтинг: 5.0
+let name=document.getElementById("name").value;
+let price=document.getElementById("price").value;
 
-<br><br>
 
-📦 Категория: Товар
+ctx.fillText(name,30,canvas.height-110);
 
-<br>
+ctx.fillText("💰 "+price+" ₽",30,canvas.height-60);
 
-🚚 Быстрая доставка
+ctx.fillText("⭐ 4.9  🚚 Доставка",30,canvas.height-20);
 
-`;
 
 }
 
