@@ -5,55 +5,55 @@
 <title>ShadowCard AI</title>
 
 <style>
-body {
-  background:#0b0b12;
-  color:white;
-  font-family:Arial;
-  text-align:center;
-  padding:20px;
+body{
+background:#090912;
+color:white;
+font-family:Arial;
+text-align:center;
+padding:20px;
 }
 
-.card {
-  background:#171722;
-  border-radius:20px;
-  padding:25px;
-  max-width:450px;
-  margin:auto;
-  box-shadow:0 0 20px #8a2be2;
+.box{
+max-width:450px;
+margin:auto;
+background:#17172a;
+padding:25px;
+border-radius:25px;
+box-shadow:0 0 25px #8a2be2;
 }
 
-h1 {
-  color:#b36cff;
+h1{
+color:#b36cff;
 }
 
-input, textarea {
-  width:90%;
-  padding:12px;
-  margin:10px;
-  border-radius:10px;
-  border:none;
+input,textarea{
+width:90%;
+padding:12px;
+margin:10px;
+border-radius:12px;
+border:0;
 }
 
-button {
-  background:#8a2be2;
-  color:white;
-  padding:15px 25px;
-  border:none;
-  border-radius:15px;
-  font-size:18px;
+button{
+background:#8a2be2;
+color:white;
+border:0;
+padding:15px 25px;
+border-radius:15px;
+font-size:18px;
 }
 
-img {
-  max-width:90%;
-  border-radius:15px;
-  margin-top:15px;
+#preview{
+max-width:90%;
+border-radius:15px;
+margin:15px;
 }
 
-.result {
-  margin-top:20px;
-  background:#222233;
-  padding:15px;
-  border-radius:15px;
+.result{
+margin-top:20px;
+background:#24243b;
+padding:15px;
+border-radius:15px;
 }
 </style>
 
@@ -61,28 +61,28 @@ img {
 
 <body>
 
-<div class="card">
+<div class="box">
 
 <h1>🌑 ShadowCard AI</h1>
 
-<p>Создай карточку товара</p>
+<p>Создание карточек товаров с ИИ</p>
 
-<input type="file" id="photo" accept="image/*">
+<input id="photo" type="file" accept="image/*">
 
 <br>
 
 <img id="preview" style="display:none">
 
-<textarea id="text" placeholder="Описание товара"></textarea>
+<textarea id="description" placeholder="Описание товара"></textarea>
 
 <br>
 
-<button onclick="createCard()">
+<button onclick="makeCard()">
 🚀 Создать карточку
 </button>
 
 <div class="result" id="result">
-✨ Здесь появится карточка
+✨ Карточка появится здесь
 </div>
 
 </div>
@@ -90,25 +90,45 @@ img {
 
 <script>
 
-let photo = document.getElementById("photo");
-let preview = document.getElementById("preview");
+let photo=document.getElementById("photo");
+let preview=document.getElementById("preview");
 
-photo.onchange = function(){
- let file = photo.files[0];
- preview.src = URL.createObjectURL(file);
- preview.style.display="block";
+photo.onchange=function(){
+let file=this.files[0];
+
+if(file){
+preview.src=URL.createObjectURL(file);
+preview.style.display="block";
+}
 }
 
 
-function createCard(){
+function makeCard(){
 
-let text = document.getElementById("text").value;
+let text=document.getElementById("description").value;
 
-document.getElementById("result").innerHTML =
-"✨ Карточка готова<br><br>" +
-"🛒 Товар:<br>" +
-text +
-"<br><br>⭐ Рейтинг: 5.0<br>📦 Категория: Товар";
+if(text==""){
+text="Новый товар";
+}
+
+document.getElementById("result").innerHTML=
+`
+<h2>✨ Готово!</h2>
+
+🛒 ${text}
+
+<br><br>
+
+⭐ Рейтинг: 5.0
+
+<br>
+
+📦 Категория: Товар
+
+<br>
+
+🚚 Быстрая доставка
+`;
 
 }
 
