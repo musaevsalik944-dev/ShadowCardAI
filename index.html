@@ -26,7 +26,7 @@ h1{
 color:#b36cff;
 }
 
-input,button{
+input, select, button{
 width:90%;
 padding:12px;
 margin:10px;
@@ -40,14 +40,13 @@ color:white;
 font-size:18px;
 }
 
-.option{
-background:#24243b;
-padding:15px;
-margin:10px;
+canvas{
+max-width:100%;
+margin-top:20px;
 border-radius:15px;
-cursor:pointer;
 }
 </style>
+
 </head>
 
 <body>
@@ -56,59 +55,94 @@ cursor:pointer;
 
 <h1>🌑 ShadowCard AI</h1>
 
-<p>🤖 Создай рекламный текст для товара</p>
+<p>Создай AI-карточку товара</p>
 
-<input id="product" placeholder="Например: футболка">
+<input id="photo" type="file" accept="image/*">
 
-<button onclick="generateText()">
-🤖 Создать текст ИИ
+<input id="name" placeholder="Название товара">
+
+<select id="style">
+<option>⚪ Минимализм</option>
+<option>🟣 Премиум</option>
+<option>🔥 Маркетплейс</option>
+<option>🌑 Shadow Style</option>
+</select>
+
+<button onclick="createCard()">
+🤖 Создать AI-карточку
 </button>
 
-<div id="results"></div>
+<canvas id="canvas"></canvas>
 
 </div>
 
 
 <script>
 
-function generateText(){
+let img=new Image();
+let canvas=document.getElementById("canvas");
+let ctx=canvas.getContext("2d");
+let loaded=false;
 
-let product=document.getElementById("product").value;
 
-if(product==""){
-product="товар";
+document.getElementById("photo").onchange=function(){
+
+let reader=new FileReader();
+
+reader.onload=function(e){
+
+img.onload=function(){
+
+canvas.width=img.width;
+canvas.height=img.height;
+
+ctx.drawImage(img,0,0);
+
+loaded=true;
+
 }
 
-let texts=[
-"🔥 НОВИНКА\nКРУТЫЕ "+product.toUpperCase()+"\nСТИЛЬ НА КАЖДЫЙ ДЕНЬ",
+img.src=e.target.result;
 
-"✨ НОВЫЙ СТИЛЬ\n"+product.toUpperCase()+" TOP",
+}
 
-"🔥 ТВОЙ ВЫБОР\nМОДНЫЙ "+product.toUpperCase()
-];
-
-
-let html="";
-
-texts.forEach(function(t){
-
-html+=`
-<div class="option" onclick="selectText(this)">
-${t.replaceAll("\n","<br>")}
-</div>
-`;
-
-});
-
-
-document.getElementById("results").innerHTML=html;
+reader.readAsDataURL(this.files[0]);
 
 }
 
 
-function selectText(el){
 
-alert("Выбран текст:\n\n"+el.innerText);
+function createCard(){
+
+if(!loaded){
+alert("Сначала загрузите фото");
+return;
+}
+
+let name=document.getElementById("name").value;
+let style=document.getElementById("style").value;
+
+
+ctx.drawImage(img,0,0);
+
+
+ctx.fillStyle="rgba(0,0,0,0.55)";
+ctx.fillRect(0,canvas.height-160,canvas.width,160);
+
+
+ctx.fillStyle="white";
+ctx.font="bold 40px Arial";
+
+
+ctx.fillText("🔥 "+name,30,canvas.height-100);
+
+
+ctx.font="28px Arial";
+ctx.fillText(style,30,canvas.height-55);
+
+
+ctx.fillText("✨ AI DESIGN",30,canvas.height-20);
+
 
 }
 
